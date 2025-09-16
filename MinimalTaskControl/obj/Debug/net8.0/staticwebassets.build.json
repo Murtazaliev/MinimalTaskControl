@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "HTxNP4gIiBlaa4OlGOlFoHGVHkMoGo7VwgZld6DvNwU=",
+  "Source": "MinimalTaskControl.WebApi",
+  "BasePath": "_content/MinimalTaskControl.WebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
