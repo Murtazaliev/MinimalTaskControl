@@ -426,7 +426,7 @@ ehthumbs.db
 Desktop.ini
 
 # Visual Studio specific
-/.vs/
+.vs/
 *.user
 *.csproj.user
 *.suo
