@@ -128,6 +128,69 @@ public class TaskInfo : IEntityMarker
         ParentTaskId = parentTaskId;
     }
 
+    public void SetSubTasks(List<TaskInfo> subTasks)
+    {
+        if (subTasks == null)
+            throw new ArgumentNullException(nameof(subTasks), "Список подзадач не может быть null");
+
+        // Проверяем чтобы среди подзадач не было самой себя
+        if (subTasks.Any(st => st.Id == Id))
+            throw new BusinessException("Задача не может быть подзадачей самой себя");
+
+        // Проверяем чтобы среди подзадач не было родительской задачи
+        if (subTasks.Any(st => st.Id == ParentTaskId))
+            throw new BusinessException("Родительская задача не может быть подзадачей");
+
+        // Проверяем циклические зависимости
+        CheckForCircularDependencies(subTasks);
+
+        SubTasks = subTasks;
+
+        // Устанавливаем себя как родителя для всех подзадач
+        foreach (var subTask in subTasks)
+        {
+            subTask.ParentTaskId = Id;
+        }
+    }
+
+    private static void CheckForCircularDependencies(List<TaskInfo> subTasks)
+    {
+        var visited = new HashSet<Guid>();
+        var recursionStack = new HashSet<Guid>();
+
+        foreach (var subTask in subTasks)
+        {
+            if (HasCircularDependency(subTask, visited, recursionStack))
+            {
+                throw new BusinessException("Обнаружена циклическая зависимость в подзадачах");
+            }
+        }
+    }
+
+    private static bool HasCircularDependency(TaskInfo task, HashSet<Guid> visited, HashSet<Guid> recursionStack)
+    {
+        if (recursionStack.Contains(task.Id))
+            return true;
+
+        if (visited.Contains(task.Id))
+            return false;
+
+        visited.Add(task.Id);
+        recursionStack.Add(task.Id);
+
+        if (task.SubTasks != null)
+        {
+            foreach (var subTask in task.SubTasks)
+            {
+                if (HasCircularDependency(subTask, visited, recursionStack))
+                    return true;
+            }
+        }
+
+        recursionStack.Remove(task.Id);
+        return false;
+    }
+
     public void SetStatus(TasksStatus? newStatus)
     {
         if (newStatus == null || Status == newStatus)
