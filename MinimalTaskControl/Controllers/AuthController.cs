@@ -47,7 +47,7 @@ public class AuthController : ControllerBase
             return BadRequest("User already exists");
         }
 
-        var newUser = new AuthUser // ← Создаем AuthUser
+        var newUser = new AuthUser 
         {
             Username = request.Username,
             Password = request.Password,
