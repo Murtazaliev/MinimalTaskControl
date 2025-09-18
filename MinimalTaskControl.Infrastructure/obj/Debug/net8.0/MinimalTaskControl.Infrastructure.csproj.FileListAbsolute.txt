@@ -15,3 +15,4 @@ C:\Users\ITQ\source\repos\MinimalTaskControl\MinimalTaskControl.Infrastructure\o
 C:\Users\ITQ\source\repos\MinimalTaskControl\MinimalTaskControl.Infrastructure\obj\Debug\net8.0\ref\MinimalTaskControl.Infrastructure.dll
 C:\Users\ITQ\source\repos\MinimalTaskControl\MinimalTaskControl.Infrastructure\bin\Debug\net8.0\MinimalTaskControl.Infrastructure.runtimeconfig.json
 C:\Users\ITQ\source\repos\MinimalTaskControl\MinimalTaskControl.Infrastructure\obj\Debug\net8.0\MinimalTaskControl.Infrastructure.genruntimeconfig.cache
+C:\Users\ITQ\source\repos\MinimalTaskControl\MinimalTaskControl.Infrastructure\obj\Debug\net8.0\MinimalTaskControl.Infrastructure.sourcelink.json

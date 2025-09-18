@@ -10,3 +10,4 @@ C:\Users\ITQ\source\repos\MinimalTaskControl\MinimalTaskControl.Core\obj\Debug\n
 C:\Users\ITQ\source\repos\MinimalTaskControl\MinimalTaskControl.Core\obj\Debug\net8.0\refint\MinimalTaskControl.Core.dll
 C:\Users\ITQ\source\repos\MinimalTaskControl\MinimalTaskControl.Core\obj\Debug\net8.0\MinimalTaskControl.Core.pdb
 C:\Users\ITQ\source\repos\MinimalTaskControl\MinimalTaskControl.Core\obj\Debug\net8.0\ref\MinimalTaskControl.Core.dll
+C:\Users\ITQ\source\repos\MinimalTaskControl\MinimalTaskControl.Core\obj\Debug\net8.0\MinimalTaskControl.Core.sourcelink.json

@@ -13,3 +13,6 @@
 /.vs/MinimalTaskControl/v17/HierarchyCache.v1.txt
 /MinimalTaskControl/obj/Debug/net8.0/MinimalTaskControl.WebApi.AssemblyInfo.cs
 *.dockerignore
+*.dll
+/MinimalTaskControl.Core.Tests/bin/Debug/net8.0/MinimalTaskControl.Core.Tests.runtimeconfig.json
+*.exe

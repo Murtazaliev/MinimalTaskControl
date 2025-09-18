@@ -8,6 +8,6 @@ namespace MinimalTaskControl.Core.Interfaces.Repositories
         Task UpdateAsync(TaskInfo task, CancellationToken cancellationToken = default);
 
         Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default);
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

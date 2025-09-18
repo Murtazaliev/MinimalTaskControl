@@ -1,27 +1,17 @@
 ﻿using MediatR;
-using MinimalTaskControl.Core.Exceptions;
-using MinimalTaskControl.Core.Interfaces.Repositories;
-using MinimalTaskControl.Core.Interfaces;
 using MinimalTaskControl.Core.Entities;
-using Microsoft.EntityFrameworkCore;
+using MinimalTaskControl.Core.Exceptions;
+using MinimalTaskControl.Core.Interfaces;
+using MinimalTaskControl.Core.Interfaces.Repositories;
 
 namespace MinimalTaskControl.Core.Mediatr.Queries.GetTaskById;
 
-public class GetTaskByIdQueryHandler : IRequestHandler<GetTaskByIdQuery, GetTaskByIdResult>
+public class GetTaskByIdQueryHandler(IRepository<TaskInfo> repository,
+  ISpecificationFactory specFactory) : IRequestHandler<GetTaskByIdQuery, GetTaskByIdResult>
 {
-    private readonly IRepository<TaskInfo> _repository;
-    private readonly ISpecificationFactory _specFactory;
-
-    public GetTaskByIdQueryHandler(IRepository<TaskInfo> repository,
-      ISpecificationFactory specFactory)
-    {
-        _repository = repository;
-        _specFactory = specFactory;
-    }
-
     public async Task<GetTaskByIdResult> Handle(GetTaskByIdQuery request, CancellationToken cancellationToken)
     {
-        var spec = _specFactory.Create<TaskInfo>(x => x.Id == request.TaskId);
+        var spec = specFactory.Create<TaskInfo>(x => x.Id == request.TaskId);
         spec.AddInclude("ParentTask");
         spec.AddInclude("SubTasks");
         spec.AddSelect(x => new GetTaskByIdResult
@@ -56,8 +46,8 @@ public class GetTaskByIdQueryHandler : IRequestHandler<GetTaskByIdQuery, GetTask
             } : null
         });
 
-        var task = await _repository.GetFirstOrDefaultAsync<GetTaskByIdResult>(spec, cancellationToken);
+        var task = await repository.GetFirstOrDefaultAsync<GetTaskByIdResult>(spec, cancellationToken);
 
-        return task == null ? throw new NotFoundException("Task", request.TaskId) : task;
+        return task ?? throw new NotFoundException("Task", request.TaskId);
     }
 }

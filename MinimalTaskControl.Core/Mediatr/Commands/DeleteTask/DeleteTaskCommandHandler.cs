@@ -7,29 +7,24 @@ using MinimalTaskControl.Core.Mediatr.Commands.UpdateTask;
 
 namespace MinimalTaskControl.Core.Mediatr.Commands.DeleteTask;
 
-public class DeleteTaskCommandHandler
+public class DeleteTaskCommandHandler(IRepository<TaskInfo> repository, ITaskInfoRepository taskInfoRepository, ISpecificationFactory specFactory)
 {
-    private readonly IRepository<TaskInfo> _repository;
-    private readonly ITaskInfoRepository _taskInfoRepository;
-    private readonly ISpecificationFactory _specFactory;
-
-    public DeleteTaskCommandHandler(IRepository<TaskInfo> repository, ITaskInfoRepository taskInfoRepository, ISpecificationFactory specFactory)
-    {
-        _repository = repository;
-        _taskInfoRepository = taskInfoRepository;
-        _specFactory = specFactory;
-    }
-
     public async Task<Unit> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
     {
-        var spec = _specFactory.Create<TaskInfo>(x => x.Id == request.TaskId);
+        var spec = specFactory.Create<TaskInfo>(x => x.Id == request.TaskId);
+        spec.AddInclude("SubTasks");
 
-        var task = await _repository.GetFirstOrDefaultAsync(spec, cancellationToken) ?? throw new NotFoundException("Task", request.TaskId);
+        var task = await repository.GetFirstOrDefaultAsync(spec, cancellationToken) ?? throw new NotFoundException("Task", request.TaskId);
+
+        if (task.SubTasks != null && task.SubTasks.Any(st => st.DeletedAt == null))
+        {
+            throw new BusinessException("Невозможно удалить задачу с активными подзадачами");
+        }
 
         task.MarkAsDeleted();
 
-        await _taskInfoRepository.UpdateAsync(task);
-        await _taskInfoRepository.SaveChangesAsync();
+        await taskInfoRepository.UpdateAsync(task, cancellationToken);
+        await taskInfoRepository.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }

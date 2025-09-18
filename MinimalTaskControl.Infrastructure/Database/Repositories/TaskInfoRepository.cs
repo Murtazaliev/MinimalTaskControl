@@ -17,25 +17,19 @@ public class TaskInfoRepository : ITaskInfoRepository
 
     public async Task AddAsync(TaskInfo task, CancellationToken cancellationToken = default)
     {
-        if (task == null)
-            throw new ArgumentNullException(nameof(task));
+        ArgumentNullException.ThrowIfNull(task);
 
         await _dbSet.AddAsync(task, cancellationToken);
     }
 
     public async Task UpdateAsync(TaskInfo task, CancellationToken cancellationToken = default)
     {
-        if (task == null)
-            throw new ArgumentNullException(nameof(task));
+        ArgumentNullException.ThrowIfNull(task);
 
         var existingTask = await _dbSet
             .Include(t => t.SubTasks)
             .Include(t => t.RelatedTasks)
-            .FirstOrDefaultAsync(t => t.Id == task.Id, cancellationToken);
-
-        if (existingTask == null)
-            throw new InvalidOperationException($"Задача с ID {task.Id} не найдена");
-
+            .FirstOrDefaultAsync(t => t.Id == task.Id, cancellationToken) ?? throw new InvalidOperationException($"Задача с ID {task.Id} не найдена");
         _context.Entry(existingTask).CurrentValues.SetValues(task);
 
         UpdateSubtasks(existingTask, task.SubTasks);
@@ -48,9 +42,9 @@ public class TaskInfoRepository : ITaskInfoRepository
         return await _dbSet.AnyAsync(t => t.Id == id, cancellationToken);
     }
 
-    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.SaveChangesAsync(cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
     #region Private Methods

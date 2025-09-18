@@ -7,14 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace MinimalTaskControl.Infrastructure.Services;
 
-public class JwtService : IJwtService
+public class JwtService(JwtSettings jwtSettings) : IJwtService
 {
-    private readonly JwtSettings _jwtSettings;
-
-    public JwtService(JwtSettings jwtSettings)
-    {
-        _jwtSettings = jwtSettings;
-    }
+    private readonly JwtSettings _jwtSettings = jwtSettings;
 
     public string GenerateToken(string username, string role = "User")
     {
