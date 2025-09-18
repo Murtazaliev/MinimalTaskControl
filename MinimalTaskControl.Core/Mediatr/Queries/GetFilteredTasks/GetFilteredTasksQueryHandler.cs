@@ -7,19 +7,10 @@ using MinimalTaskControl.Core.Exceptions;
 
 namespace MinimalTaskControl.Core.Mediatr.Queries.GetFilteredTasks;
 
-public class GetFilteredTasksQueryHandler : IRequestHandler<GetFilteredTasksQuery, List<GetFilteredTasksResult>>
+public class GetFilteredTasksQueryHandler(
+    IRepository<TaskInfo> repository,
+    ISpecificationFactory specFactory) : IRequestHandler<GetFilteredTasksQuery, List<GetFilteredTasksResult>>
 {
-    private readonly IRepository<TaskInfo> _repository;
-    private readonly ISpecificationFactory _specFactory;
-
-    public GetFilteredTasksQueryHandler(
-        IRepository<TaskInfo> repository,
-        ISpecificationFactory specFactory)
-    {
-        _repository = repository;
-        _specFactory = specFactory;
-    }
-
     public async Task<List<GetFilteredTasksResult>> Handle(
         GetFilteredTasksQuery request,
         CancellationToken cancellationToken)
@@ -27,7 +18,7 @@ public class GetFilteredTasksQueryHandler : IRequestHandler<GetFilteredTasksQuer
         // Создаем базовую спецификацию
         var criteria = BuildCriteria(request);
 
-        var spec = _specFactory.Create(criteria);
+        var spec = specFactory.Create(criteria);
         spec.AddOrderByDescending(x => x.CreatedAt);
         spec.AddInclude("ParentTask");
         spec.AddInclude("SubTasks");
@@ -49,7 +40,7 @@ public class GetFilteredTasksQueryHandler : IRequestHandler<GetFilteredTasksQuer
             SubTasksCount = x.SubTasks != null ? x.SubTasks.Count : 0
         });
 
-        return await _repository.ListAsync<GetFilteredTasksResult>(spec, cancellationToken) ?? throw new NotFoundException(nameof(GetFilteredTasksResult));
+        return await repository.ListAsync<GetFilteredTasksResult>(spec, cancellationToken) ?? throw new NotFoundException(nameof(GetFilteredTasksResult));
     }
 
     private static Expression<Func<TaskInfo, bool>> BuildCriteria(GetFilteredTasksQuery request)

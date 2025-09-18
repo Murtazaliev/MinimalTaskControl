@@ -3,18 +3,14 @@ using System.Linq.Expressions;
 
 namespace MinimalTaskControl.Infrastructure.Specifications
 {
-    public class Specification<T> : ISpecification<T> where T : class
+    public class Specification<T>(Expression<Func<T, bool>> criteria) : ISpecification<T> where T : class
     {
-        public Specification(Expression<Func<T, bool>> criteria)
-        {
-            Criteria = criteria;
-        }
         public int? Skip { get; private set; }
         public int? Take { get; private set; }
 
-        public Expression<Func<T, bool>> Criteria { get; }
-        public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
-        public List<string> IncludeStrings { get; } = new List<string>();
+        public Expression<Func<T, bool>> Criteria { get; } = criteria;
+        public List<Expression<Func<T, object>>> Includes { get; } = [];
+        public List<string> IncludeStrings { get; } = [];
         public Expression<Func<T, object>>? Select { get; private set; }
         public Expression<Func<T, object>>? OrderBy { get; private set; }
         public Expression<Func<T, object>>? OrderByDescending { get; private set; }
