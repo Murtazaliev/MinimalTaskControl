@@ -425,14 +425,21 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# Local development environment files
-.env
-.env.local
-.env.*.local
-/MinimalTaskControl.Infrastructure.Tests/obj/Debug/net8.0/MinimalTaskControl.Infrastructure.Tests.csproj.AssemblyReference.cache
-/MinimalTaskControl.Infrastructure.Tests/obj/Debug/net8.0/MinimalTaskControl.Infrastructure.Tests.AssemblyInfoInputs.cache
-/MinimalTaskControl.Infrastructure.Tests/obj/Debug/net8.0/MinimalTaskControl.Infrastructure.Tests.AssemblyInfo.cs
-/.vs/MinimalTaskControl/v17/TestStore/0/004.testlog
-/MinimalTaskControl.Core.Tests/obj/Debug/net8.0/MinimalTaskControl.Core.Tests.AssemblyInfo.cs
-/MinimalTaskControl.Core.Tests/obj/Debug/net8.0/MinimalTaskControl.Core.Tests.AssemblyInfoInputs.cache
-/MinimalTaskControl.Core.Tests/obj/Debug/net8.0/MinimalTaskControl.Core.Tests.csproj.AssemblyReference.cache
+# Visual Studio specific
+/.vs/
+*.user
+*.csproj.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build specific
+**/obj/**/*
+**/bin/**/*
+*.cache
+*.dll
+*.exe
+*.bin
+
+# Runtime specific
+*.runtimeconfig.json
