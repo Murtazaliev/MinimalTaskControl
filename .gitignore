@@ -436,7 +436,6 @@ Desktop.ini
 # Build specific
 **/obj/**/*
 **/bin/**/*
-**/.vs/**/*
 *.cache
 *.dll
 *.exe
