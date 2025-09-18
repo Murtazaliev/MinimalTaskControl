@@ -1,0 +1,15 @@
+﻿################################################################################
+# Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
+################################################################################
+
+/MinimalTaskControl/obj/Container/ContainerDevelopmentMode.cache
+*.vsidx
+*.config
+*.v2
+*.bin
+*.suo
+/MinimalTaskControl/obj/Debug/net8.0/MinimalTaskControl.WebApi.AssemblyInfoInputs.cache
+/MinimalTaskControl/MinimalTaskControl.WebApi.csproj.user
+/.vs/MinimalTaskControl/v17/HierarchyCache.v1.txt
+/MinimalTaskControl/obj/Debug/net8.0/MinimalTaskControl.WebApi.AssemblyInfo.cs
+*.dockerignore
