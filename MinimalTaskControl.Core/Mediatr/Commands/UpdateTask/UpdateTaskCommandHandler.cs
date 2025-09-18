@@ -6,10 +6,10 @@ using MinimalTaskControl.Core.Interfaces.Repositories;
 
 namespace MinimalTaskControl.Core.Mediatr.Commands.UpdateTask;
 
-public class UpdateTaskCommandHandler(IRepository<TaskInfo> repository, ITaskInfoRepository taskInfoRepository, ISpecificationFactory specFactory) : IRequestHandler<UpdateTaskCommand, Unit>
+public class UpdateTaskCommandHandler(IRepository<TaskInfo> repository, ITaskInfoRepository taskInfoRepository, ISpecificationFactory specFactory) : IRequestHandler<UpdateTaskCommand>
 {
 
-    public async Task<Unit> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
     {
         var spec = specFactory.Create<TaskInfo>(x => x.Id == request.TaskId);
 
@@ -22,7 +22,5 @@ public class UpdateTaskCommandHandler(IRepository<TaskInfo> repository, ITaskInf
 
         await taskInfoRepository.UpdateAsync(task, cancellationToken);
         await taskInfoRepository.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }

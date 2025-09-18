@@ -9,4 +9,4 @@ public record UpdateTaskCommand(
     string? Description,
     string? Assignee,
     TasksStatus? Status,
-    TasksPriority? Priority) : IRequest<Unit>;
+    TasksPriority? Priority) : IRequest;

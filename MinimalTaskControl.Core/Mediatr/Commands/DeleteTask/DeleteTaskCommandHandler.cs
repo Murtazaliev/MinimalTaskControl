@@ -3,12 +3,13 @@ using MinimalTaskControl.Core.Entities;
 using MinimalTaskControl.Core.Exceptions;
 using MinimalTaskControl.Core.Interfaces;
 using MinimalTaskControl.Core.Interfaces.Repositories;
+using MinimalTaskControl.Core.Mediatr.Commands.CreateTask;
 
 namespace MinimalTaskControl.Core.Mediatr.Commands.DeleteTask;
 
-public class DeleteTaskCommandHandler(IRepository<TaskInfo> repository, ITaskInfoRepository taskInfoRepository, ISpecificationFactory specFactory)
+public class DeleteTaskCommandHandler(IRepository<TaskInfo> repository, ITaskInfoRepository taskInfoRepository, ISpecificationFactory specFactory) : IRequestHandler<DeleteTaskCommand>
 {
-    public async Task<Unit> Handle(DeleteTaskCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteTaskCommand request, CancellationToken cancellationToken)
     {
         var spec = specFactory.Create<TaskInfo>(x => x.Id == request.TaskId);
         spec.AddInclude("SubTasks");
@@ -24,7 +25,5 @@ public class DeleteTaskCommandHandler(IRepository<TaskInfo> repository, ITaskInf
 
         await taskInfoRepository.UpdateAsync(task, cancellationToken);
         await taskInfoRepository.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }
